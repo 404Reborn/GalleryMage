@@ -1,0 +1,20 @@
+# Archivo con la API Key (no subir a GitHub)
+config.js
+
+# Variables de entorno
+.env
+.env.local
+
+# Dependencias
+node_modules/
+
+# Configuración del editor
+.vscode/
+.idea/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
