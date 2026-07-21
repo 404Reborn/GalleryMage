@@ -6,17 +6,30 @@
         <title>Galería Unsplash</title>
         <link rel="stylesheet" href="css/style.css" />
         <link rel="stylesheet" href="style.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Vampiro+One&display=swap" rel="stylesheet">
-
-        
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Vampiro+One&display=swap"
+            rel="stylesheet"
+        />
     </head>
     <body>
-        <h1>GALLERYMAGE </h1>
-        <h2>me gusta: <span id="contador">0</span></h2>
+        <div class="contador-header">
+            <h1>GALLERYMAGE</h1>
+
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="buscador"
+                    placeholder="⌕ Buscar imágenes..."
+                />
+                <button class="button-search">Buscar</button>
+            </div>
+        </div>
+        <h2>Favoritos: <span id="contador">0</span></h2>
+
         <div class="container-prompt"></div>
-        
+
         <script src="js/config.js"></script>
         <script src="js/main.js" defer></script>
     </body>

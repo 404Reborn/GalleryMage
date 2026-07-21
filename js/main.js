@@ -1,8 +1,10 @@
 const galleryNature = document.querySelector(".container-prompt");
-
 const contador = document.querySelector("#contador");
-    let totalLikes = 0;
 
+let likes = JSON.parse(localStorage.getItem("likes")) || [];
+let totalLikes = likes.length;
+
+contador.textContent = totalLikes;
 async function fetchGallery() {
     try {
       const response = await fetch(
@@ -21,14 +23,15 @@ async function fetchGallery() {
 
             const button = document.createElement("button");
             button.textContent = "♥";
-            
-            button.addEventListener("click", (e) => {
-                darLike(button);
-                console.log(image.id);
+
+            if (likes.includes(image.id)) {
+                button.classList.add("liked");
+            }
+
+            button.addEventListener("click", () => {
+                darLike(button, image.id);
             });
-
           
-
             const galleryElement = document.createElement("div");
             galleryElement.classList.add("gallery-item");
 
@@ -67,5 +70,24 @@ function darLike(button) {
     }
 
     contador.textContent = totalLikes;
+}
+
+function darLike(button, id) {
+
+    if (button.classList.contains("liked")) {
+
+        button.classList.remove("liked");
+        likes = likes.filter(likeId => likeId !== id);
+
+    } else {
+
+        button.classList.add("liked");
+        likes.push(id);
+    }
+
+    totalLikes = likes.length;
+    contador.textContent = totalLikes;
+
+    localStorage.setItem("likes", JSON.stringify(likes));
 }
 
