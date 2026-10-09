@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>GalleryMage</title>
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Vampiro+One&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <main id="auth-screen" class="auth-screen">
+            <section class="auth-card" aria-labelledby="auth-heading">
+                <a class="auth-brand" href="/" aria-label="GalleryMage, inicio">
+                    <span class="brand-mark" aria-hidden="true">G</span>
+                    <span>GalleryMage</span>
+                </a>
+                <p class="auth-eyebrow">UN LUGAR PARA TU MIRADA</p>
+                <h1 id="auth-heading">Inicia sesión</h1>
+                <p id="auth-description" class="auth-description">
+                    Descubre, comparte y guarda fotografías que te inspiran.
+                </p>
+                <form id="auth-form" class="auth-form">
+                    <label id="auth-name-label" for="auth-name" hidden>Nombre</label>
+                    <input id="auth-name" name="nombre" autocomplete="name" placeholder="Tu nombre" hidden />
+                    <label for="auth-email">Correo electrónico</label>
+                    <input id="auth-email" name="email" type="email" placeholder="nombre@ejemplo.com" autocomplete="email" required />
+                    <label for="auth-password">Contraseña</label>
+                    <input id="auth-password" name="password" type="password" placeholder="Tu contraseña" autocomplete="current-password" required />
+                    <label id="auth-confirm-label" for="auth-confirm" hidden>Confirmar contraseña</label>
+                    <input id="auth-confirm" name="confirmacion" type="password" placeholder="Repite tu contraseña" autocomplete="new-password" hidden />
+                    <a id="forgot-password" class="auth-link auth-forgot" href="#recuperar">¿Has olvidado tu contraseña?</a>
+                    <p id="auth-message" class="form-message" role="alert" aria-live="polite" hidden></p>
+                    <button id="auth-submit" class="primary-button" type="submit">Iniciar sesión</button>
+                </form>
+                <button id="google-login" class="google-button" type="button" title="Google OAuth aún no está disponible">
+                    <span aria-hidden="true">G</span> Continuar con Google
+                </button>
+                <p class="auth-switch">
+                    <span id="auth-switch-copy">¿No tienes cuenta?</span>
+                    <button id="auth-switch" class="text-button" type="button">Crear cuenta</button>
+                </p>
+                <button id="auth-theme-toggle" class="text-button auth-theme-toggle" type="button">Cambiar apariencia</button>
+            </section>
+            <aside class="auth-art" aria-label="GalleryMage, galería de fotografía">
+                <div class="auth-art-copy">
+                    <h2>Imagina, Crea, Comparte</h2>
+                </div>
+            </aside>
+        </main>
+
+        <div id="app-shell" hidden>
+            <header class="contador-header">
+                <a class="app-brand" href="/" aria-label="GalleryMage, galería">
+                    <span class="brand-mark" aria-hidden="true">G</span>
+                    <span>GalleryMage</span>
+                </a>
+                <div class="search-box">
+                    <input type="search" id="buscador" placeholder="⌕ Buscar fotografías o hashtags..." />
+                    <button class="button-search" type="button">Buscar</button>
+                </div>
+                <nav class="acciones-cabecera" aria-label="Acciones de usuario">
+                    <button id="abrir-subida" class="header-action primary-action" type="button">＋ <span>Subir foto</span></button>
+                    <button id="abrir-perfil" class="avatar-button" type="button" aria-label="Abrir mi perfil"><span id="avatar-iniciales">GM</span></button>
+                    <button id="abrir-ajustes" class="icon-button" type="button" aria-label="Configuración" title="Configuración">⚙️</button>
+                </nav>
+            </header>
+            <main class="gallery-main">
+                <section class="gallery-heading">
+                    <div>
+                        <p class="section-eyebrow">INSPIRACIÓN VISUAL</p>
+                        <h1>Descubre fotografías</h1>
+                    </div>
+                    <p id="gallery-status" class="gallery-status" aria-live="polite"></p>
+                </section>
+                <div class="container-prompt" aria-live="polite"></div>
+            </main>
+        </div>
+
+        <dialog id="modal-foto" aria-labelledby="modal-titulo">
+            <div class="modal-contenido">
+                <button id="cerrar-modal" type="button" aria-label="Cerrar fotografía">✕</button>
+                <img id="modal-imagen" alt="" />
+                <h2 id="modal-titulo"></h2>
+                <p id="modal-informacion"></p>
+                <button id="modal-like" type="button" aria-label="Añadir a favoritos" aria-pressed="false">♥<span id="modal-like-count">0</span></button>
+            </div>
+        </dialog>
+        <dialog id="upload-dialog" aria-labelledby="upload-titulo">
+            <div class="upload-contenido">
+                <button id="cerrar-subida" class="cerrar-dialog" type="button" aria-label="Cerrar formulario de subida">✕</button>
+                <p class="dialog-eyebrow">COMPARTE TU MIRADA</p>
+                <h2 id="upload-titulo">Subir una foto</h2>
+                <p class="dialog-description">Añade una imagen nueva a la galería.</p>
+                <form id="formulario-foto" class="formulario-subida">
+                    <label for="titulo">Título de la foto</label>
+                    <input type="text" id="titulo" name="titulo" placeholder="Dale un nombre a tu foto" required />
+                    <label for="hashtags">Hashtags (opcional)</label>
+                    <input type="text" id="hashtags" name="hashtags" placeholder="naturaleza, bosque, montaña" />
+                    <label for="imagen">Archivo de imagen</label>
+                    <input type="file" id="imagen" name="imagen" accept="image/*" required />
+                    <p id="subida-mensaje" class="form-message" role="alert" hidden></p>
+                    <button id="upload-submit" class="primary-button" type="submit">Subir foto</button>
+                </form>
+            </div>
+        </dialog>
+        <dialog id="profile-dialog" aria-labelledby="profile-name">
+            <div class="profile-panel">
+                <button class="cerrar-dialog" data-close-dialog type="button" aria-label="Cerrar perfil">✕</button>
+                <p class="dialog-eyebrow">TU ESPACIO</p>
+                <div class="profile-summary">
+                    <div id="profile-avatar" class="profile-avatar" aria-hidden="true">GM</div>
+                    <div>
+                        <h2 id="profile-name"></h2>
+                        <p id="profile-email" class="muted-text"></p>
+                    </div>
+                </div>
+                <div class="profile-stats">
+                    <div><strong id="profile-photo-count">—</strong><span>Publicaciones</span></div>
+                    <div><strong id="profile-like-count">—</strong><span>Likes recibidos</span></div>
+                </div>
+                <p class="feature-note">Las estadísticas y publicaciones propias necesitan asociar cada foto con su autor en una futura API.</p>
+                <div class="profile-tabs" role="tablist" aria-label="Contenido del perfil">
+                    <button class="profile-tab active" type="button" role="tab" aria-selected="true" data-profile-tab="posts">Mis publicaciones</button>
+                    <button class="profile-tab" type="button" role="tab" aria-selected="false" data-profile-tab="likes">Mis likes</button>
+                </div>
+                <div id="profile-content" class="profile-content" role="tabpanel"></div>
+                <section class="profile-edit">
+                    <h3>Editar perfil</h3>
+                    <p class="feature-note">Cambiar nombre, email, foto de perfil y contraseña estará disponible cuando exista la API de perfil.</p>
+                    <button class="secondary-button" type="button" disabled>Editar perfil · Próximamente</button>
+                </section>
+            </div>
+        </dialog>
+        <dialog id="settings-dialog" aria-labelledby="settings-title">
+            <div class="settings-panel">
+                <button class="cerrar-dialog" data-close-dialog type="button" aria-label="Cerrar configuración">✕</button>
+                <p class="dialog-eyebrow">PERSONALIZA TU EXPERIENCIA</p>
+                <h2 id="settings-title">Configuración</h2>
+                <div class="settings-layout">
+                    <nav class="settings-nav" aria-label="Categorías de configuración">
+                        <a href="#settings-account">Cuenta</a>
+                        <a href="#settings-appearance">Apariencia</a>
+                        <a href="#settings-privacy">Privacidad</a>
+                        <a href="#settings-activity">Actividad</a>
+                        <a href="#settings-session">Sesión</a>
+                        <a href="#settings-info">Información</a>
+                    </nav>
+                    <div class="settings-content">
+                        <section id="settings-account" class="settings-section">
+                            <h3>Cuenta</h3>
+                            <p>Editar perfil, nombre, foto, email, contraseña o eliminar cuenta.</p>
+                            <button class="secondary-button" type="button" data-open-profile>Editar perfil</button>
+                            <p class="feature-note">Las demás opciones requieren futuras rutas de gestión de cuenta.</p>
+                        </section>
+                        <section id="settings-appearance" class="settings-section">
+                            <h3>Apariencia</h3>
+                            <label for="theme-select">Tema</label>
+                            <select id="theme-select">
+                                <option value="light">Claro</option>
+                                <option value="dark">Oscuro</option>
+                                <option value="system">Seguir configuración del sistema</option>
+                            </select>
+                        </section>
+                        <section id="settings-privacy" class="settings-section">
+                            <h3>Privacidad</h3>
+                            <label class="setting-toggle"><input type="checkbox" disabled /> Perfil público</label>
+                            <label class="setting-toggle"><input type="checkbox" disabled /> Mostrar email</label>
+                            <label class="setting-toggle"><input type="checkbox" disabled /> Permitir comentarios</label>
+                            <p class="feature-note">Estas preferencias necesitan persistencia y soporte de privacidad en el backend.</p>
+                        </section>
+                        <section id="settings-activity" class="settings-section">
+                            <h3>Actividad</h3>
+                            <button class="settings-link" type="button" data-open-profile data-profile-tab="posts">Mis publicaciones</button>
+                            <button class="settings-link" type="button" data-open-profile data-profile-tab="likes">Mis likes</button>
+                            <p class="settings-link muted-text">Fotos guardadas · Próximamente</p>
+                        </section>
+                        <section id="settings-session" class="settings-section">
+                            <h3>Sesión</h3>
+                            <p id="logout-status" class="feature-note" role="status" aria-live="polite">Cerrarás tu sesión actual de GalleryMage.</p>
+                            <button id="logout-button" class="secondary-button" type="button">Cerrar sesión</button>
+                        </section>
+                        <section id="settings-info" class="settings-section">
+                            <h3>Información</h3>
+                            <p>Acerca de GalleryMage · Versión 1.0.0</p>
+                            <p class="muted-text">Política de privacidad y términos estarán disponibles próximamente.</p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </dialog>
+        <script type="module" src="js/main.js"></script>
+    </body>
+</html>

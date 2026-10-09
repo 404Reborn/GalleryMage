@@ -1,12 +1,14 @@
-# Archivo con la API Key (no subir a GitHub)
-config.js
-
-# Variables de entorno
+# Archivos con credenciales o claves
 .env
-.env.local
+.env.*
+!.env.example
+config.js
 
 # Dependencias
 node_modules/
+
+# Fotografías subidas por los usuarios
+public/uploads/
 
 # Configuración del editor
 .vscode/
@@ -18,3 +20,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Cookies y datos de sesión
+cookies.txt

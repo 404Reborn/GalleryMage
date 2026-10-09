@@ -8,15 +8,31 @@ El proyecto fue creado como práctica de consumo de APIs REST, manipulación del
 
 # ✨ Características
 
-- 🌿 Obtiene imágenes desde la API de Unsplash.
+- 🖼️ Carga fotografías desde la API local `GET /api/photos`.
 - 🔍 Barra de búsqueda preparada para realizar búsquedas personalizadas.
-- ❤️ Sistema de favoritos.
-- 💾 Los favoritos se guardan mediante **LocalStorage**, por lo que permanecen incluso al recargar la página.
-- 🔢 Contador dinámico de imágenes favoritas.
-- 🎨 Diseño moderno con animaciones.
+- 🔐 Inicio de sesión y registro mediante la sesión del backend.
+- ❤️ Likes de interfaz guardados localmente en el navegador; aún no son likes compartidos.
+- 🎨 Tema claro, oscuro o del sistema con preferencia guardada en LocalStorage.
+- 🧑‍💻 Pantallas de perfil y configuración preparadas para futuras APIs.
+- 📤 Subida de fotografías protegida por la sesión del usuario.
 - 📱 Responsive para dispositivos móviles.
-- ⚡ Consumo de API usando `fetch()` y `async/await`.
-- 🖼️ Creación dinámica de tarjetas desde JavaScript.
+- ⚡ Frontend con JavaScript vanilla y módulos ES.
+
+## Estado de las funciones sociales
+
+La interfaz de registro usa `POST /api/usuarios/registro`, el login usa
+`POST /api/usuarios/login` y la sesión se consulta con `GET /api/sesion`.
+La galería conserva `GET /api/photos` y la subida usa `POST /api/photos`.
+
+Google OAuth, recuperación de contraseña y cierre de sesión todavía no tienen
+rutas implementadas. Las publicaciones no guardan todavía la identidad de su
+autor, y likes, perfil editable, comentarios, guardados y preferencias de
+privacidad tampoco tienen persistencia en el backend. La interfaz señala esas
+funciones como pendientes en lugar de simular respuestas de API.
+
+El frontend está organizado en `public/js/auth.js` (autenticación),
+`public/js/main.js` (galería y subida), `public/js/profile-settings.js`
+(perfil y configuración) y `public/js/theme.js` (tema).
 
 ---
 
