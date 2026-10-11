@@ -15,8 +15,13 @@ const switchButton = document.querySelector("#auth-switch");
 const switchCopy = document.querySelector("#auth-switch-copy");
 const message = document.querySelector("#auth-message");
 const forgotLink = document.querySelector("#forgot-password");
+const recoveryDialog = document.querySelector("#password-recovery-dialog");
+const recoveryForm = document.querySelector("#recovery-form");
+const recoveryMessage = document.querySelector("#recovery-message");
+const recoverySubmit = document.querySelector("#recovery-submit");
 
 googleButton.addEventListener("click", () => {
+    googleButton.disabled = true;
     window.location.href = "/auth/google";
 });
 const connectedUser = document.querySelector("#profile-name");
@@ -100,10 +105,39 @@ export async function initializeAuth(onAuthenticated) {
     );
     forgotLink.addEventListener("click", (event) => {
         event.preventDefault();
-        showMessage(
-            "La recuperación de contraseña estará disponible cuando exista una ruta de recuperación en el backend.",
-            "info",
-        );
+        recoveryMessage.hidden = true;
+        recoveryMessage.textContent = "";
+        recoveryDialog.showModal();
+        document.querySelector("#recovery-email").focus();
+    });
+    recoveryForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        recoverySubmit.disabled = true;
+        recoverySubmit.textContent = "Enviando…";
+        recoveryMessage.hidden = true;
+        try {
+            const result = await postJson("/api/usuarios/recuperacion", {
+                email: document.querySelector("#recovery-email").value.trim(),
+            });
+            if (!result.response.ok) {
+                throw new Error(
+                    result.result.mensaje || "No se pudo solicitar la recuperación.",
+                );
+            }
+            recoveryMessage.textContent = result.result.mensaje;
+            recoveryMessage.dataset.type = "success";
+            recoveryMessage.hidden = false;
+        } catch (error) {
+            recoveryMessage.textContent =
+                error instanceof Error
+                    ? error.message
+                    : "No se pudo solicitar la recuperación.";
+            recoveryMessage.dataset.type = "error";
+            recoveryMessage.hidden = false;
+        } finally {
+            recoverySubmit.disabled = false;
+            recoverySubmit.textContent = "Enviar enlace";
+        }
     });
 
     setRegisterMode(false);

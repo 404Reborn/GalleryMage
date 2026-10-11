@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <meta
+            name="description"
+            content="Borrador de condiciones de uso de GalleryMage, pendiente de decisiones del responsable y revisión jurídica."
+        />
+        <title>Condiciones de uso · GalleryMage</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body class="legal-page">
+        <a class="legal-skip-link" href="#main-content">Saltar al contenido</a>
+        <header class="legal-header">
+            <a class="legal-brand" href="/" aria-label="GalleryMage, inicio">
+                <span class="brand-mark" aria-hidden="true">G</span>
+                <span>GalleryMage</span>
+            </a>
+            <nav class="legal-header-nav" aria-label="Documentos legales">
+                <a href="privacy.html">Privacidad</a>
+                <a href="legal.html">Aviso legal</a>
+                <a href="terms.html" aria-current="page">Condiciones</a>
+            </nav>
+            <a class="legal-app-link" href="/">Volver a GalleryMage</a>
+        </header>
+
+        <main class="legal-layout" id="main-content">
+            <nav class="legal-toc" aria-label="Índice de las condiciones de uso">
+                <p class="legal-toc-title">En este documento</p>
+                <ol>
+                    <li><a href="#objeto">Objeto y alcance</a></li>
+                    <li><a href="#cuentas">Acceso y cuentas</a></li>
+                    <li><a href="#responsabilidad-usuario">Responsabilidades</a></li>
+                    <li><a href="#publicacion">Publicar y gestionar fotos</a></li>
+                    <li><a href="#derechos-contenido">Derechos sobre el contenido</a></li>
+                    <li><a href="#usos-prohibidos">Usos no permitidos</a></li>
+                    <li><a href="#denuncias">Avisos de contenido</a></li>
+                    <li><a href="#moderacion">Moderación y retirada</a></li>
+                    <li><a href="#cuentas-suspension">Suspensión y eliminación</a></li>
+                    <li><a href="#disponibilidad">Disponibilidad</a></li>
+                    <li><a href="#privacidad">Privacidad</a></li>
+                    <li><a href="#cambios">Cambios y vigencia</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ol>
+            </nav>
+
+            <article class="legal-document">
+                <p class="legal-eyebrow">BORRADOR DE CONDICIONES DEL SERVICIO</p>
+                <h1>Condiciones de uso</h1>
+                <p class="legal-intro">
+                    Este borrador explica las funciones disponibles que se han comprobado en GalleryMage
+                    e identifica las reglas que el responsable aún debe decidir.
+                </p>
+                <aside class="legal-draft" aria-label="Aviso de revisión pendiente">
+                    <strong>Documento pendiente de completar y revisión jurídica.</strong>
+                    No constituye asesoramiento ni acredita cumplimiento normativo. Las decisiones
+                    pendientes sobre acceso, licencias, denuncias, moderación y cuentas deben resolverse
+                    antes de aplicar estas condiciones.
+                </aside>
+                <p class="legal-updated">
+                    Entrada en vigor:
+                    <span class="legal-pending">[Pendiente: completar después de aprobar y publicar las condiciones]</span>
+                </p>
+
+                <section id="objeto">
+                    <h2>1. Objeto y alcance del servicio</h2>
+                    <p>
+                        GalleryMage es una aplicación web para crear cuentas, publicar y consultar
+                        fotografías, marcar likes y gestionar determinados datos del perfil y preferencias
+                        de privacidad. Estas condiciones son un borrador: el responsable debe definir su
+                        alcance y aprobar su versión definitiva.
+                    </p>
+                </section>
+
+                <section id="cuentas">
+                    <h2>2. Acceso y creación de cuentas</h2>
+                    <p>
+                        El registro local solicita nombre, correo electrónico y contraseña; el servidor
+                        valida el nombre (de 1 a 60 caracteres), el formato del correo y la contraseña.
+                        Para crear una cuenta local, cambiar su contraseña o restablecerla, la contraseña
+                        debe ocupar entre 8 y 72 bytes en UTF-8. El formulario también pide repetirla y
+                        comprueba que coincida. Al completar el registro, la aplicación inicia una sesión.
+                    </p>
+                    <p>
+                        El acceso local comprueba la contraseña con el hash bcrypt guardado en la cuenta.
+                        También se puede iniciar sesión mediante Google OAuth si el responsable configura
+                        sus credenciales: la integración solicita los datos de perfil y correo y requiere
+                        un correo verificado. Las cuentas nuevas creadas mediante Google no reciben una
+                        contraseña local.
+                    </p>
+                    <p>
+                        No se ha definido en el código una edad mínima ni un proceso de verificación de edad.
+                        El responsable debe determinar los requisitos de elegibilidad y describirlos aquí,
+                        tras la revisión jurídica correspondiente.
+                    </p>
+                </section>
+
+                <section id="responsabilidad-usuario">
+                    <h2>3. Responsabilidades de las personas usuarias</h2>
+                    <p>
+                        <strong>Propuesta para revisión del responsable — no vigente:</strong> incluir
+                        reglas sobre el uso autorizado de la cuenta, los derechos necesarios para aportar
+                        contenido y el respeto a los derechos de otras personas y a las normas aplicables.
+                        El responsable debe determinar su redacción y alcance antes de incorporarlas a unas
+                        condiciones definitivas.
+                    </p>
+                </section>
+
+                <section id="publicacion">
+                    <h2>4. Publicación y gestión de fotografías</h2>
+                    <p>
+                        Las personas con sesión iniciada pueden subir fotografías JPEG, PNG, GIF o WebP de
+                        hasta 10 MB, con título y hashtags opcionales. El servidor valida el tipo declarado
+                        y la firma de la imagen. La aplicación permite marcar y quitar likes a personas con
+                        sesión iniciada, cambiar la imagen de perfil y ajustar la visibilidad del perfil y
+                        del correo.
+                    </p>
+                    <p>
+                        Los perfiles nuevos son públicos de forma predeterminada. La persona propietaria
+                        puede hacer privado su perfil; el servidor deja entonces de mostrar el perfil y sus
+                        fotografías a otras personas, y comprueba también las rutas directas de las imágenes.
+                        Las imágenes de perfil se sirven desde una ruta protegida con la misma regla de
+                        visibilidad. El propietario conserva el acceso.
+                    </p>
+                    <p>
+                        Una persona autenticada puede borrar sus propias fotografías. El servidor verifica
+                        la propiedad e impide borrar las de otras cuentas; al borrar una foto, elimina los
+                        likes asociados y limpia el archivo si ya no está en uso. Las fotos y avatares de
+                        perfiles públicos pueden ser accesibles mediante sus rutas de imagen; la privacidad
+                        privada no constituye una protección frente a copias obtenidas mientras el contenido
+                        era público.
+                    </p>
+                </section>
+
+                <section id="derechos-contenido">
+                    <h2>5. Derechos sobre el contenido aportado</h2>
+                    <p>
+                        Publicar una fotografía no implica, según las funciones verificadas, que GalleryMage
+                        pase a ser titular de los derechos sobre ella. Quien la aporta debe contar con los
+                        derechos y autorizaciones necesarios.
+                    </p>
+                    <p>
+                        <strong>Propuesta para revisión del responsable — no vigente:</strong> solicitar a
+                        quien publica una autorización no exclusiva, limitada a las operaciones necesarias
+                        para prestar GalleryMage, que permita recibir y almacenar la fotografía, realizar
+                        copias técnicas necesarias y mostrarla o transmitirla dentro del servicio únicamente
+                        a la audiencia permitida por las opciones de privacidad. La propuesta no transferiría
+                        la titularidad ni autorizaría usos promocionales o ajenos a esas funciones.
+                    </p>
+                    <p>
+                        El responsable debe revisar si ese alcance basta para el servicio real y definir,
+                        con asesoramiento jurídico, el territorio, la duración, la intervención de proveedores
+                        técnicos, los efectos de borrar una fotografía y cualquier tratamiento de copias
+                        técnicas o de seguridad. El código actual no implementa ni recoge una aceptación de
+                        esta licencia; la propuesta no debe tratarse como una condición contractual vigente.
+                    </p>
+                </section>
+
+                <section id="usos-prohibidos">
+                    <h2>6. Usos no permitidos</h2>
+                    <p>
+                        <strong>Propuesta para revisión del responsable — no vigente:</strong> valorar
+                        prohibir usos que vulneren derechos o la legislación aplicable, intentos de acceso
+                        no autorizado a cuentas, contenido privado o funciones restringidas, y la elusión
+                        de controles de acceso. Estas reglas no se presentan como obligaciones contractuales
+                        actualmente aceptadas; el responsable debe revisarlas y decidir su alcance.
+                    </p>
+                </section>
+
+                <section id="denuncias">
+                    <h2>7. Avisos de contenido que pueda vulnerar derechos</h2>
+                    <p>
+                        Actualmente no hay una ruta o formulario de denuncia de contenido en la aplicación.
+                        El responsable debe proporcionar un canal de contacto y definir el procedimiento
+                        para recibir, verificar y tramitar avisos antes de anunciar que existe ese mecanismo.
+                    </p>
+                    <p>Canal pendiente: <span class="legal-pending">[Pendiente de completar por el responsable]</span>.</p>
+                </section>
+
+                <section id="moderacion">
+                    <h2>8. Moderación y retirada de contenido</h2>
+                    <p>
+                        El código permite a cada persona borrar sus propias fotografías, pero no implementa
+                        herramientas de moderación para otras cuentas ni un flujo de retirada a partir de
+                        denuncias. El responsable debe decidir y documentar las reglas y el proceso aplicable,
+                        sin presentar funciones inexistentes como disponibles.
+                    </p>
+                </section>
+
+                <section id="cuentas-suspension">
+                    <h2>9. Suspensión y eliminación de cuentas</h2>
+                    <p>
+                        No existe actualmente una función de interfaz o una ruta de API para suspender o
+                        eliminar cuentas. Cerrar sesión solo termina la sesión activa. La eliminación de
+                        fotografías propias sí está disponible.
+                    </p>
+                    <p>
+                        El responsable debe definir los procedimientos, motivos, comunicación y efectos
+                        aplicables a la suspensión o cierre de cuentas y a las solicitudes de supresión.
+                        Este borrador no afirma que tales acciones puedan hacerse directamente desde la aplicación.
+                    </p>
+                </section>
+
+                <section id="disponibilidad">
+                    <h2>10. Disponibilidad del servicio</h2>
+                    <p>
+                        El código no establece un nivel de disponibilidad ni un compromiso de soporte.
+                        El funcionamiento depende del servidor y de los servicios externos que el responsable
+                        habilite. Cualquier compromiso de continuidad o mantenimiento debe definirse antes
+                        de publicar las condiciones.
+                    </p>
+                </section>
+
+                <section id="privacidad">
+                    <h2>11. Privacidad</h2>
+                    <p>
+                        El tratamiento de datos y las opciones de visibilidad se describen en la
+                        <a href="privacy.html">Política de privacidad</a>. También puedes consultar el
+                        <a href="legal.html">Aviso legal</a>.
+                    </p>
+                </section>
+
+                <section id="cambios">
+                    <h2>12. Modificación y entrada en vigor</h2>
+                    <p>
+                        El código no incorpora un mecanismo específico de publicación o aceptación de nuevas
+                        condiciones. El responsable debe decidir cómo comunicar cambios y, cuando proceda,
+                        obtener la aceptación necesaria.
+                    </p>
+                    <p>
+                        Fecha de entrada en vigor:
+                        <span class="legal-pending">[Pendiente de completar tras aprobar la versión definitiva]</span>.
+                    </p>
+                </section>
+
+                <section id="contacto">
+                    <h2>13. Contacto</h2>
+                    <p>
+                        Consultas sobre estas condiciones:
+                        <span class="legal-pending">[Pendiente: indicar un canal de contacto real del responsable]</span>.
+                    </p>
+                </section>
+
+                <footer class="legal-footer">
+                    <p>Más información de GalleryMage</p>
+                    <nav class="legal-links" aria-label="Otros documentos y aplicación">
+                        <a href="privacy.html">Política de privacidad</a>
+                        <a href="legal.html">Aviso legal</a>
+                        <a href="/">Volver a GalleryMage</a>
+                    </nav>
+                </footer>
+            </article>
+        </main>
+    </body>
+</html>

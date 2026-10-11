@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <meta
+            name="description"
+            content="Información sobre los datos tratados y las opciones de privacidad de GalleryMage."
+        />
+        <title>Política de privacidad · GalleryMage</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body class="legal-page">
+        <a class="legal-skip-link" href="#main-content">Saltar al contenido</a>
+        <header class="legal-header">
+            <a class="legal-brand" href="/" aria-label="GalleryMage, inicio">
+                <span class="brand-mark" aria-hidden="true">G</span>
+                <span>GalleryMage</span>
+            </a>
+            <nav class="legal-header-nav" aria-label="Documentos legales">
+                <a href="privacy.html" aria-current="page">Privacidad</a>
+                <a href="legal.html">Aviso legal</a>
+                <a href="terms.html">Condiciones</a>
+            </nav>
+            <a class="legal-app-link" href="/">Volver a GalleryMage</a>
+        </header>
+
+        <main class="legal-layout" id="main-content">
+            <nav class="legal-toc" aria-label="Índice de la política de privacidad">
+                <p class="legal-toc-title">En este documento</p>
+                <ol>
+                    <li><a href="#responsable">Responsable</a></li>
+                    <li><a href="#datos">Datos tratados</a></li>
+                    <li><a href="#finalidades">Finalidades y base jurídica</a></li>
+                    <li><a href="#visibilidad">Perfiles y visibilidad</a></li>
+                    <li><a href="#autenticacion">Autenticación y sesiones</a></li>
+                    <li><a href="#almacenamiento">Almacenamiento y seguridad</a></li>
+                    <li><a href="#terceros">Servicios de terceros</a></li>
+                    <li><a href="#conservacion">Conservación</a></li>
+                    <li><a href="#derechos">Derechos</a></li>
+                    <li><a href="#eliminacion">Modificación y eliminación</a></li>
+                    <li><a href="#actualizaciones">Actualizaciones</a></li>
+                    <li><a href="#pendiente">Información pendiente</a></li>
+                </ol>
+            </nav>
+
+            <article class="legal-document">
+                <p class="legal-eyebrow">INFORMACIÓN SOBRE DATOS PERSONALES</p>
+                <h1>Política de privacidad</h1>
+                <p class="legal-intro">
+                    Este documento describe las funciones de privacidad observadas en GalleryMage.
+                    Los datos del responsable, las decisiones jurídicas y la información de proveedores
+                    que aún no se han confirmado aparecen señalados como pendientes.
+                </p>
+                <aside class="legal-draft" aria-label="Aviso de revisión pendiente">
+                    <strong>Borrador pendiente de completar y revisión jurídica.</strong>
+                    Esta página no acredita por sí sola el cumplimiento del RGPD ni de ninguna otra norma.
+                    No debe publicarse como información definitiva mientras queden datos o decisiones pendientes.
+                </aside>
+                <p class="legal-updated">
+                    Última actualización:
+                    <span class="legal-pending">[Pendiente: indicar la fecha cuando el responsable revise este documento]</span>
+                </p>
+
+                <section id="responsable">
+                    <h2>1. Responsable del tratamiento</h2>
+                    <p>La identidad y los datos de contacto del responsable deben completarse antes de publicar esta política:</p>
+                    <ul>
+                        <li>Nombre o razón social: <span class="legal-pending">[Pendiente de completar]</span>.</li>
+                        <li>Datos identificativos que procedan: <span class="legal-pending">[Pendiente de completar]</span>.</li>
+                        <li>Domicilio, cuando sea exigible: <span class="legal-pending">[Pendiente de completar]</span>.</li>
+                        <li>Contacto para asuntos de privacidad: <span class="legal-pending">[Pendiente de completar]</span>.</li>
+                        <li>Delegado de protección de datos, si procede: <span class="legal-pending">[Confirmar si aplica]</span>.</li>
+                    </ul>
+                </section>
+
+                <section id="datos">
+                    <h2>2. Datos personales tratados</h2>
+                    <h3>Datos de cuenta</h3>
+                    <p>
+                        Se guardan el nombre y el correo electrónico. En las cuentas locales se conserva
+                        un hash de la contraseña generado con bcrypt; la contraseña original no se devuelve
+                        en las respuestas de perfil o sesión. En cuentas creadas con Google se guarda el
+                        identificador de Google y el proveedor de autenticación. También pueden guardarse
+                        una referencia a la imagen de perfil y las preferencias de visibilidad del perfil
+                        y del correo. Para recuperar una contraseña local se almacena temporalmente un hash
+                        del token y su caducidad, no el token en claro.
+                    </p>
+                    <h3>Contenido y actividad</h3>
+                    <p>
+                        Las fotografías publicadas se guardan como archivos; en MongoDB se guardan sus
+                        referencias, títulos, hashtags e identificador de quien las publicó. Los likes
+                        relacionan el identificador de una fotografía con el de la cuenta que los marcó.
+                    </p>
+                    <h3>Datos técnicos de sesión</h3>
+                    <p>
+                        La sesión se conserva en MongoDB y contiene datos de sesión de la cuenta, como su
+                        identificador, nombre, correo, avatar y preferencias. El navegador recibe una cookie
+                        de sesión. El servidor no documenta aquí la recopilación de direcciones IP ni el uso
+                        de analítica; cualquier registro adicional de la infraestructura debe confirmarse
+                        con quien la opera.
+                    </p>
+                </section>
+
+                <section id="finalidades">
+                    <h2>3. Finalidades y base jurídica</h2>
+                    <p>
+                        El código utiliza estos datos para crear y gestionar cuentas, autenticar a las
+                        personas, mantener sesiones, publicar y mostrar fotografías, gestionar likes,
+                        aplicar las opciones de visibilidad y tramitar la recuperación de contraseñas
+                        locales cuando SMTP está habilitado.
+                    </p>
+                    <p>
+                        <strong>Pendiente de revisión:</strong> corresponde al responsable determinar y
+                        documentar la base jurídica aplicable a cada finalidad, las obligaciones de
+                        información y si alguna operación requiere consentimiento. No se presupone aquí
+                        una base jurídica ni un consentimiento que la aplicación no haya implementado.
+                    </p>
+                </section>
+
+                <section id="visibilidad">
+                    <h2>4. Perfiles públicos y privados</h2>
+                    <p>
+                        Los perfiles nuevos son públicos de forma predeterminada. En un perfil público,
+                        otras personas pueden consultar el nombre, el avatar y las estadísticas públicas
+                        devueltas por la API, además de las fotografías públicas y su contenido.
+                    </p>
+                    <p>
+                        Al hacer privado el perfil, este y las fotografías de esa cuenta dejan de estar
+                        disponibles para otras personas, incluso mediante las rutas de imágenes que
+                        comprueba el servidor. El propietario mantiene el acceso. Los registros antiguos
+                        sin una preferencia guardada se tratan como públicos por compatibilidad.
+                    </p>
+                    <p>
+                        El correo no se muestra por defecto. El propietario puede activar «Mostrar correo»;
+                        la API del perfil público solo lo incluye cuando el perfil también es público.
+                        La persona propietaria puede consultar su propio correo en su sesión.
+                    </p>
+                </section>
+
+                <section id="autenticacion">
+                    <h2>5. Autenticación y sesiones</h2>
+                    <p>
+                        GalleryMage ofrece autenticación local con contraseñas almacenadas como hashes
+                        bcrypt y una integración con Google OAuth que depende de su configuración.
+                        En el flujo de Google se solicitan los ámbitos de perfil y correo, y se requiere
+                        un correo verificado. Las cuentas de Google no reciben una contraseña local al crearse.
+                    </p>
+                    <p>
+                        Las sesiones se guardan en MongoDB. La cookie se configura con las opciones
+                        HttpOnly y SameSite=Lax, una duración de navegador de una hora y Secure cuando
+                        <code>NODE_ENV</code> es <code>production</code>. La clave de firma se configura
+                        mediante <code>SESSION_SECRET</code>. Esta descripción no sustituye una evaluación
+                        de seguridad del despliegue.
+                    </p>
+                </section>
+
+                <section id="almacenamiento">
+                    <h2>6. Almacenamiento y seguridad</h2>
+                    <p>
+                        Los datos de cuenta, fotografías, likes y sesiones se gestionan en MongoDB.
+                        Las imágenes nuevas se guardan en el sistema de archivos del servidor, fuera del
+                        directorio público; las fotografías antiguas pueden seguir en
+                        <code>public/uploads</code>, pero sus rutas se comprueban contra el registro y la
+                        privacidad vigente antes de servirlas.
+                    </p>
+                    <p>
+                        La subida limita el tamaño de las fotografías a 10 MB y el de los avatares a 5 MB,
+                        admite JPEG, PNG, GIF y WebP y comprueba la firma del archivo. Son medidas observables
+                        en el código, no una garantía de seguridad total.
+                    </p>
+                    <p>
+                        <strong>Pendiente de confirmar:</strong> ubicación y proveedor del alojamiento,
+                        controles operativos, copias de seguridad, destinatarios con acceso y plazos de
+                        conservación de esas copias. No se han supuesto ubicaciones ni medidas adicionales.
+                    </p>
+                </section>
+
+                <section id="terceros">
+                    <h2>7. Servicios de terceros</h2>
+                    <ul>
+                        <li>
+                            <strong>Google OAuth:</strong> hay integración para iniciar sesión con Google;
+                            depende de las credenciales y de la configuración del despliegue.
+                        </li>
+                        <li>
+                            <strong>Google Fonts:</strong> la página principal carga tipografías desde
+                            Google Fonts. Las páginas legales usan la hoja de estilos local y no solicitan
+                            esas fuentes externas directamente.
+                        </li>
+                        <li>
+                            <strong>SMTP:</strong> Nodemailer permite enviar enlaces de recuperación cuando
+                            se configura un servidor de correo. La dependencia instalada no demuestra que
+                            haya un proveedor activo.
+                        </li>
+                        <li>
+                            <strong>MongoDB:</strong> la aplicación requiere MongoDB; la instancia puede
+                            ser local o la indicada por la configuración del despliegue.
+                        </li>
+                    </ul>
+                    <p>
+                        El responsable debe identificar los proveedores realmente habilitados, revisar sus
+                        condiciones, los acuerdos aplicables y, cuando corresponda, las transferencias
+                        internacionales y sus garantías.
+                    </p>
+                </section>
+
+                <section id="conservacion">
+                    <h2>8. Conservación</h2>
+                    <p>
+                        El código no define un calendario general de conservación para las cuentas, el
+                        contenido, los likes o los registros operativos. El responsable debe establecer los
+                        plazos según cada finalidad y obligación aplicable, e indicar qué ocurre con las
+                        copias de seguridad, si existen.
+                    </p>
+                    <p>
+                        Como plazos técnicos observables, la cookie del navegador se configura para una hora
+                        y los enlaces de recuperación caducan a los 20 minutos y solo pueden consumirse una vez.
+                        Estos plazos no determinan cuánto se conservan los demás datos.
+                    </p>
+                </section>
+
+                <section id="derechos">
+                    <h2>9. Derechos y solicitudes</h2>
+                    <p>
+                        Las personas pueden dirigirse al responsable para solicitar los derechos que les
+                        reconozca la normativa aplicable, incluidos, cuando proceda, el acceso, la
+                        rectificación, la supresión, la oposición, la limitación o la portabilidad, y retirar
+                        un consentimiento cuando esa sea la base aplicable.
+                    </p>
+                    <p>
+                        Canal de contacto: <span class="legal-pending">[Pendiente de completar por el responsable]</span>.
+                        También debe indicarse el procedimiento de verificación y atención. Cuando corresponda,
+                        puede reclamarse ante la autoridad de control competente.
+                    </p>
+                </section>
+
+                <section id="eliminacion">
+                    <h2>10. Modificación y eliminación de datos</h2>
+                    <p>
+                        Desde la aplicación se puede modificar parte de la información del perfil, cambiar
+                        el avatar y borrar fotografías propias. Al borrar una fotografía, el servidor elimina
+                        sus likes asociados y elimina el archivo si ya no está referenciado.
+                    </p>
+                    <p>
+                        No existe actualmente una función de interfaz o una ruta de API para que una persona
+                        elimine su cuenta. Cerrar sesión elimina la sesión activa, no la cuenta. El responsable
+                        debe completar un canal y un procedimiento para tramitar solicitudes de supresión y
+                        explicar los plazos aplicables, incluidos los de copias de seguridad si las hubiera.
+                    </p>
+                </section>
+
+                <section id="actualizaciones">
+                    <h2>11. Actualizaciones</h2>
+                    <p>
+                        Esta política debe revisarse cuando cambien el código, los proveedores, las finalidades
+                        o las prácticas de tratamiento. La fecha solo debe completarse tras una revisión real.
+                    </p>
+                </section>
+
+                <section id="pendiente">
+                    <h2>12. Información pendiente de completar</h2>
+                    <p>Antes de publicar la política como definitiva, el responsable debe confirmar o completar:</p>
+                    <ul>
+                        <li>Identidad, datos de contacto y, si aplica, delegado de protección de datos.</li>
+                        <li>Bases jurídicas, obligaciones informativas y plazos de conservación por finalidad.</li>
+                        <li>Proveedores activos, ubicación del alojamiento, accesos, transferencias y garantías.</li>
+                        <li>Política de copias de seguridad y procedimiento real para solicitudes de supresión.</li>
+                        <li>Fecha de revisión y cualquier registro técnico adicional del entorno de producción.</li>
+                    </ul>
+                    <p class="legal-review-note">
+                        Estos puntos requieren confirmación del responsable y revisión jurídica antes de usar
+                        esta página como política definitiva.
+                    </p>
+                </section>
+
+                <footer class="legal-footer">
+                    <p>Más información de GalleryMage</p>
+                    <nav class="legal-links" aria-label="Otros documentos y aplicación">
+                        <a href="legal.html">Aviso legal</a>
+                        <a href="terms.html">Condiciones de uso</a>
+                        <a href="/">Volver a GalleryMage</a>
+                    </nav>
+                </footer>
+            </article>
+        </main>
+    </body>
+</html>

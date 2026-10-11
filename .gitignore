@@ -2,13 +2,13 @@
 .env
 .env.*
 !.env.example
-config.js
 
 # Dependencias
 node_modules/
 
 # Fotografías subidas por los usuarios
 public/uploads/
+/uploads/
 
 # Configuración del editor
 .vscode/

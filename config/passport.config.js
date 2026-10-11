@@ -1,8 +1,12 @@
 import passport from "passport";
+import bcrypt from "bcrypt";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import {
+    asociarCuentaGoogleLegacy,
     buscarUsuarioPorEmail,
+    buscarUsuarioPorGoogleId,
     crearUsuario,
+    obtenerUsuarioPorId,
 } from "../models/usuario.model.js";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -18,37 +22,68 @@ export function configurarPassport() {
             },
             async (accessToken, refreshToken, profile, done) => {
                 try {
-                    const email = profile.emails?.[0]?.value;
+                    const verifiedEmail = profile.emails?.find(
+                        ({ verified, value }) => verified === true && value,
+                    );
+                    const email = verifiedEmail?.value;
 
                     if (!email) {
-                        return done(new Error("Google no devolvió un email."));
+                        return done(
+                            new Error("Google no devolvió un correo verificado."),
+                        );
                     }
 
-                    let usuario = await buscarUsuarioPorEmail(email);
+                    let usuario = await buscarUsuarioPorGoogleId(profile.id);
 
                     if (!usuario) {
-                        const nombre =
-                            profile.displayName ||
-                            profile.name?.givenName ||
-                            "Usuario de Google";
-
-                        const resultado = await crearUsuario(
-                            nombre,
-                            email,
-                            `google-${profile.id}`,
-                        );
-
                         usuario = await buscarUsuarioPorEmail(email);
 
-                        if (!usuario || !resultado.insertedId) {
-                            return done(
-                                new Error(
-                                    "No se pudo crear el usuario de Google.",
-                                ),
+                        if (usuario) {
+                            const isLegacyGoogleAccount =
+                                !usuario.authProvider &&
+                                typeof usuario.password === "string" &&
+                                (await bcrypt.compare(
+                                    `google-${profile.id}`,
+                                    usuario.password,
+                                ));
+                            if (!isLegacyGoogleAccount) {
+                                return done(
+                                    new Error(
+                                        "No se puede vincular este acceso de Google a esa cuenta.",
+                                    ),
+                                );
+                            }
+
+                            await asociarCuentaGoogleLegacy(
+                                usuario._id,
+                                profile.id,
+                            );
+                            usuario = await buscarUsuarioPorGoogleId(profile.id);
+                        } else {
+                            const nombre =
+                                profile.displayName ||
+                                profile.name?.givenName ||
+                                "Usuario de Google";
+                            const resultado = await crearUsuario(
+                                nombre,
+                                email,
+                                null,
+                                {
+                                    authProvider: "google",
+                                    googleId: profile.id,
+                                },
+                            );
+                            usuario = await obtenerUsuarioPorId(
+                                resultado.insertedId,
                             );
                         }
                     }
 
+                    if (!usuario) {
+                        return done(
+                            new Error("No se pudo resolver la cuenta de Google."),
+                        );
+                    }
                     return done(null, usuario);
                 } catch (error) {
                     return done(error);
@@ -63,7 +98,7 @@ export function configurarPassport() {
 
     passport.deserializeUser(async (id, done) => {
         try {
-            const usuario = await buscarUsuarioPorEmailPorId(id);
+            const usuario = await obtenerUsuarioPorId(id);
             done(null, usuario);
         } catch (error) {
             done(error);
@@ -71,16 +106,4 @@ export function configurarPassport() {
     });
 
     return passport;
-}
-
-async function buscarUsuarioPorEmailPorId(id) {
-    const { conectarDB } = await import("../config/db.config.js");
-
-    const db = await conectarDB();
-
-    const usuario = await db.collection("usuarios").findOne({
-        _id: new (await import("mongodb")).ObjectId(id),
-    });
-
-    return usuario;
 }
