@@ -18,7 +18,10 @@ export function configurarPassport() {
             {
                 clientID: GOOGLE_CLIENT_ID,
                 clientSecret: GOOGLE_CLIENT_SECRET,
-                callbackURL: "http://localhost:3000/auth/google/callback",
+                callbackURL: new URL(
+                    "/auth/google/callback",
+                    process.env.APP_BASE_URL || "http://localhost:3000",
+                ).toString(),
             },
             async (accessToken, refreshToken, profile, done) => {
                 try {
@@ -29,7 +32,9 @@ export function configurarPassport() {
 
                     if (!email) {
                         return done(
-                            new Error("Google no devolvió un correo verificado."),
+                            new Error(
+                                "Google no devolvió un correo verificado.",
+                            ),
                         );
                     }
 
@@ -58,7 +63,9 @@ export function configurarPassport() {
                                 usuario._id,
                                 profile.id,
                             );
-                            usuario = await buscarUsuarioPorGoogleId(profile.id);
+                            usuario = await buscarUsuarioPorGoogleId(
+                                profile.id,
+                            );
                         } else {
                             const nombre =
                                 profile.displayName ||
@@ -81,7 +88,9 @@ export function configurarPassport() {
 
                     if (!usuario) {
                         return done(
-                            new Error("No se pudo resolver la cuenta de Google."),
+                            new Error(
+                                "No se pudo resolver la cuenta de Google.",
+                            ),
                         );
                     }
                     return done(null, usuario);
