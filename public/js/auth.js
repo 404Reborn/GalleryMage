@@ -1,3 +1,5 @@
+import { enviarFormularioAutenticacion } from "./auth-form-flow.js";
+
 const googleButton = document.querySelector("#google-login");
 const authScreen = document.querySelector("#auth-screen");
 const appShell = document.querySelector("#app-shell");
@@ -19,17 +21,19 @@ const recoveryDialog = document.querySelector("#password-recovery-dialog");
 const recoveryForm = document.querySelector("#recovery-form");
 const recoveryMessage = document.querySelector("#recovery-message");
 const recoverySubmit = document.querySelector("#recovery-submit");
+let isRegisterMode = false;
+let isSubmitting = false;
 
 googleButton.addEventListener("click", () => {
     googleButton.disabled = true;
     window.location.href = "/auth/google";
 });
 const connectedUser = document.querySelector("#profile-name");
-let isRegisterMode = false;
 
 export async function initializeAuth(onAuthenticated) {
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
+        if (isSubmitting) return;
         clearMessage();
         if (!form.reportValidity()) return;
         if (isRegisterMode && passwordInput.value !== confirmInput.value) {
@@ -38,41 +42,25 @@ export async function initializeAuth(onAuthenticated) {
             return;
         }
 
+        const register = isRegisterMode;
+        isSubmitting = true;
         submitButton.disabled = true;
-        submitButton.textContent = isRegisterMode
+        switchButton.disabled = true;
+        submitButton.textContent = register
             ? "Creando cuenta…"
             : "Iniciando sesión…";
         try {
             const payload = {
+                nombre: nameInput.value.trim(),
                 email: emailInput.value.trim(),
                 password: passwordInput.value,
             };
-
-            if (isRegisterMode) {
-                payload.nombre = nameInput.value.trim();
-                const registration = await postJson(
-                    "/api/usuarios/registro",
-                    payload,
-                );
-                if (!registration.response.ok) {
-                    throw new Error(
-                        registration.result.mensaje ||
-                            "No se pudo crear la cuenta.",
-                    );
-                }
-                payload.email = emailInput.value.trim();
-            }
-
-            const login = await postJson("/api/usuarios/login", {
-                email: payload.email,
-                password: payload.password,
+            const result = await enviarFormularioAutenticacion({
+                register,
+                payload,
+                postJson,
             });
-            if (!login.response.ok) {
-                throw new Error(
-                    login.result.mensaje || "No se pudo iniciar sesión.",
-                );
-            }
-            const user = login.result.usuario;
+            const user = result.usuario;
             if (
                 !user ||
                 typeof user.nombre !== "string" ||
@@ -86,15 +74,31 @@ export async function initializeAuth(onAuthenticated) {
             showApplication(user);
             onAuthenticated(user);
         } catch (error) {
+            if (
+                register &&
+                error instanceof Error &&
+                error.status === 409
+            ) {
+                setRegisterMode(false);
+                showMessage(
+                    "Ya existe una cuenta con ese correo. Inicia sesión con tu contraseña.",
+                    "error",
+                );
+                return;
+            }
             showMessage(
                 error instanceof Error
                     ? error.message
-                    : "No se pudo completar la autenticación.",
+                    : register
+                      ? "No se pudo crear la cuenta."
+                      : "No se pudo iniciar sesión.",
                 "error",
             );
         } finally {
+            isSubmitting = false;
             submitButton.disabled = false;
-            submitButton.textContent = isRegisterMode
+            switchButton.disabled = false;
+            submitButton.textContent = register
                 ? "Crear cuenta"
                 : "Iniciar sesión";
         }
@@ -141,6 +145,22 @@ export async function initializeAuth(onAuthenticated) {
     });
 
     setRegisterMode(false);
+    const googleLoginResult = new URLSearchParams(
+        window.location.search,
+    ).get("googleLogin");
+    if (googleLoginResult) {
+        showMessage(
+            googleLoginResult === "account-exists"
+                ? "Ya existe una cuenta local con ese correo. Inicia sesión con ella y vincula Google desde Configuración > Cuenta."
+                : "No se pudo completar el inicio de sesión con Google.",
+            "error",
+        );
+        history.replaceState(
+            null,
+            "",
+            `${window.location.pathname}${window.location.hash}`,
+        );
+    }
 
     try {
         const response = await fetch("/api/sesion", {

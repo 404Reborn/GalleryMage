@@ -595,6 +595,9 @@ authController = await initializeAuth(async (user) => {
     await loadPhotos();
     profileSettings.render();
 });
+if (currentUser) {
+    profileSettings.showGoogleLinkResult();
+}
 
 function renderHeaderAvatar(user) {
     const button = document.querySelector("#abrir-perfil");

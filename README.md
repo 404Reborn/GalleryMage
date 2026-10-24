@@ -55,8 +55,9 @@ Configura `GOOGLE_CLIENT_ID` y `GOOGLE_CLIENT_SECRET` en `.env` y registra la
 URL de callback que utiliza `config/passport.config.js`. Las cuentas nuevas de
 Google no reciben una contraseña local. Las cuentas Google heredadas solo se
 migran al autenticarse si se verifica el valor hash de la credencial interna
-que generaba la versión anterior; no se vincula una cuenta local por correo
-sin esa prueba.
+que generaba la versión anterior. No se vincula una cuenta local solo por
+coincidir el correo: inicia sesión en la cuenta local y usa «Vincular Google»
+en Configuración → Cuenta para autorizar la asociación explícitamente.
 
 ## Documentos legales
 

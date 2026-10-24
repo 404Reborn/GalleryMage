@@ -10,6 +10,171 @@ import {
     detectarFormatoImagen,
     rutaImagenSubida,
 } from "../services/image-storage.service.js";
+import {
+    decidirFlujoGoogle,
+    puedeVincularCuentaGoogle,
+} from "../services/google-auth-flow.js";
+import { enviarFormularioAutenticacion } from "../public/js/auth-form-flow.js";
+
+test("registering a new email uses only the registration endpoint", async () => {
+    const calls = [];
+    const expectedUser = {
+        nombre: "Ada",
+        email: "ada@example.com",
+    };
+    const result = await enviarFormularioAutenticacion({
+        register: true,
+        payload: {
+            nombre: "Ada",
+            email: "ada@example.com",
+            password: "password123",
+        },
+        postJson: async (url, payload) => {
+            calls.push({ url, payload });
+            return {
+                response: { ok: true, status: 201 },
+                result: { usuario: expectedUser },
+            };
+        },
+    });
+
+    assert.deepEqual(calls.map(({ url }) => url), [
+        "/api/usuarios/registro",
+    ]);
+    assert.deepEqual(result.usuario, expectedUser);
+});
+
+test("duplicate registration reports conflict without attempting login or replacing the account", async () => {
+    const existingAccount = {
+        email: "ada@example.com",
+        password: "unchanged-hash",
+    };
+    const calls = [];
+    await assert.rejects(
+        enviarFormularioAutenticacion({
+            register: true,
+            payload: {
+                nombre: "Replacement",
+                email: existingAccount.email,
+                password: "different-password",
+            },
+            postJson: async (url) => {
+                calls.push(url);
+                return {
+                    response: { ok: false, status: 409 },
+                    result: { mensaje: "Ya existe una cuenta." },
+                };
+            },
+        }),
+        (error) =>
+            error.message === "Ya existe una cuenta." &&
+            error.status === 409,
+    );
+    assert.deepEqual(calls, ["/api/usuarios/registro"]);
+    assert.deepEqual(existingAccount, {
+        email: "ada@example.com",
+        password: "unchanged-hash",
+    });
+});
+
+test("local login uses only login endpoint and accepts valid credentials", async () => {
+    const calls = [];
+    const user = { nombre: "Ada", email: "ada@example.com" };
+    const result = await enviarFormularioAutenticacion({
+        register: false,
+        payload: {
+            nombre: "Ignored",
+            email: "ada@example.com",
+            password: "password123",
+        },
+        postJson: async (url, payload) => {
+            calls.push({ url, payload });
+            return {
+                response: { ok: true, status: 200 },
+                result: { usuario: user },
+            };
+        },
+    });
+
+    assert.deepEqual(calls, [
+        {
+            url: "/api/usuarios/login",
+            payload: {
+                email: "ada@example.com",
+                password: "password123",
+            },
+        },
+    ]);
+    assert.deepEqual(result.usuario, user);
+});
+
+test("local login keeps incorrect-password errors distinct from duplicate registration", async () => {
+    await assert.rejects(
+        enviarFormularioAutenticacion({
+            register: false,
+            payload: {
+                email: "ada@example.com",
+                password: "wrong-password",
+            },
+            postJson: async () => ({
+                response: { ok: false, status: 401 },
+                result: { mensaje: "Email o contraseña incorrectos." },
+            }),
+        }),
+        { message: "Email o contraseña incorrectos." },
+    );
+});
+
+test("chooses safe Google authentication and linking flows", () => {
+    assert.equal(
+        decidirFlujoGoogle({
+            linkedUser: null,
+            emailUser: null,
+            linkingUserId: null,
+        }),
+        "create",
+    );
+    assert.equal(
+        decidirFlujoGoogle({
+            linkedUser: { _id: "user-1" },
+            emailUser: null,
+            linkingUserId: null,
+        }),
+        "login",
+    );
+    assert.equal(
+        decidirFlujoGoogle({
+            linkedUser: null,
+            emailUser: { _id: "user-1" },
+            linkingUserId: null,
+        }),
+        "email-conflict",
+    );
+    assert.equal(
+        decidirFlujoGoogle({
+            linkedUser: null,
+            emailUser: { _id: "user-1" },
+            linkingUserId: "user-2",
+        }),
+        "link",
+    );
+    assert.equal(
+        puedeVincularCuentaGoogle({
+            linkedUser: { _id: "another-user" },
+            emailUser: { _id: "current-user" },
+            userId: "current-user",
+        }),
+        false,
+    );
+    assert.equal(
+        puedeVincularCuentaGoogle({
+            linkedUser: { _id: "current-user" },
+            emailUser: { _id: "current-user" },
+            userId: "current-user",
+        }),
+        true,
+    );
+});
 
 test("normalizes and validates account fields", () => {
     assert.equal(normalizarEmail("  USER@Example.COM "), "user@example.com");

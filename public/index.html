@@ -738,6 +738,25 @@
                             >
                                 Editar perfil
                             </button>
+                            <p
+                                id="google-link-message"
+                                class="form-message"
+                                role="status"
+                                aria-live="polite"
+                                hidden
+                            ></p>
+                            <form action="/auth/google/link" method="post">
+                                <p>
+                                    Vincula Google después de iniciar sesión
+                                    con tu cuenta local.
+                                </p>
+                                <button
+                                    class="secondary-button"
+                                    type="submit"
+                                >
+                                    Vincular Google
+                                </button>
+                            </form>
                         </section>
                         <section
                             id="settings-appearance"

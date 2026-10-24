@@ -108,6 +108,20 @@ export async function buscarUsuarioPorGoogleId(googleId) {
     return usuarios.findOne({ googleId: String(googleId) });
 }
 
+export async function asociarCuentaGoogle(userId, googleId) {
+    const usuarios = await obtenerUsuarios();
+    return usuarios.updateOne(
+        {
+            _id: new ObjectId(String(userId)),
+            $or: [
+                { googleId: { $exists: false } },
+                { googleId: String(googleId) },
+            ],
+        },
+        { $set: { googleId: String(googleId) } },
+    );
+}
+
 export async function asociarCuentaGoogleLegacy(userId, googleId) {
     const usuarios = await obtenerUsuarios();
     return usuarios.updateOne(

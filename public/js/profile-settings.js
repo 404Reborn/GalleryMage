@@ -179,6 +179,32 @@ export function initializeProfileSettings({
         loadAppInfo();
     }
 
+    function showGoogleLinkResult() {
+        const params = new URLSearchParams(window.location.search);
+        const outcome = params.get("googleLink");
+        if (!outcome) {
+            return;
+        }
+
+        const message = document.querySelector("#google-link-message");
+        message.textContent =
+            outcome === "success"
+                ? "La cuenta de Google se ha vinculado correctamente."
+                : outcome === "conflict"
+                  ? "No se pudo vincular Google: esa cuenta ya está asociada a otro usuario."
+                  : "No se pudo completar la vinculación de Google.";
+        message.dataset.type = outcome === "success" ? "success" : "error";
+        message.hidden = false;
+        history.replaceState(
+            null,
+            "",
+            `${window.location.pathname}${window.location.hash}`,
+        );
+        selectSettingsTab("settings-account");
+        settingsDialog.hidden = false;
+        settingsDialog.showModal();
+    }
+
     function selectSettingsTab(panelId) {
         settingsTabs.forEach((tab) => {
             const active = tab.dataset.settingsTab === panelId;
@@ -730,6 +756,7 @@ export function initializeProfileSettings({
 
     return {
         render,
+        showGoogleLinkResult,
     };
 }
 

@@ -21,7 +21,6 @@ import { configurarPassport } from "./config/passport.config.js";
 import { verificarAutenticacion } from "./middleware/auth.middleware.js";
 import {
     crearDatosSesion,
-    establecerSesion,
 } from "./controllers/usuario.controller.js";
 import {
     obtenerUsuarioPorAvatar,
@@ -44,7 +43,9 @@ const { version: appVersion } = JSON.parse(
 );
 
 if (!sessionSecret || Buffer.byteLength(sessionSecret) < 32) {
-    throw new Error("Configura SESSION_SECRET con al menos 32 bytes antes de iniciar GalleryMage.");
+    throw new Error(
+        "Configura SESSION_SECRET con al menos 32 bytes antes de iniciar GalleryMage.",
+    );
 }
 
 configurarPassport();
@@ -55,7 +56,9 @@ app.use(
         resave: false,
         saveUninitialized: false,
         store: MongoStore.create({
-            mongoUrl: process.env.MONGODB_URI || "mongodb://localhost:27017/gallerymage",
+            mongoUrl:
+                process.env.MONGODB_URI ||
+                "mongodb://localhost:27017/gallerymage",
         }),
         cookie: {
             maxAge: 1000 * 60 * 60,
@@ -81,27 +84,90 @@ app.get(
     }),
 );
 
+app.post("/auth/google/link", verificarAutenticacion, (req, res, next) => {
+    const expectedOrigin = new URL(
+        process.env.APP_BASE_URL || "http://localhost:3000",
+    ).origin;
+    if (req.get("origin") !== expectedOrigin) {
+        return res.sendStatus(403);
+    }
+
+    req.session.googleLinkUserId = req.session.usuario.id;
+    req.session.save((error) => {
+        if (error) {
+            return next(error);
+        }
+        return passport.authenticate("google", {
+            scope: ["profile", "email"],
+            prompt: "select_account",
+        })(req, res, next);
+    });
+});
+
 app.get(
     "/auth/google/callback",
-    passport.authenticate("google", {
-        failureRedirect: "/",
-    }),
-    async (req, res, next) => {
-        try {
-            await establecerSesion(req, req.user);
-            res.redirect("/");
-        } catch (error) {
-            next(error);
-        }
+    (req, res, next) => {
+        const linkingUserId = req.session.googleLinkUserId;
+        const redirectAfterFailure = (outcome) => {
+            delete req.session.googleLinkUserId;
+            const result = linkingUserId ? "googleLink" : "googleLogin";
+            req.session.save((saveError) => {
+                if (saveError) {
+                    return next(saveError);
+                }
+                return res.redirect(`/?${result}=${outcome}`);
+            });
+        };
+
+        passport.authenticate("google", (error, usuario, info) => {
+            if (error) {
+                delete req.session.googleLinkUserId;
+                return req.session.save((saveError) =>
+                    next(saveError || error),
+                );
+            }
+
+            if (!usuario) {
+                const outcome =
+                    info?.code === "google-link-conflict"
+                        ? "conflict"
+                        : info?.code === "google-account-exists"
+                          ? "account-exists"
+                          : "failed";
+                return redirectAfterFailure(outcome);
+            }
+
+            return req.logIn(usuario, (loginError) => {
+                if (loginError) {
+                    return next(loginError);
+                }
+
+                delete req.session.googleLinkUserId;
+                req.session.usuario = crearDatosSesion(usuario);
+                return req.session.save((saveError) => {
+                    if (saveError) {
+                        return next(saveError);
+                    }
+                    return res.redirect(
+                        linkingUserId ? "/?googleLink=success" : "/",
+                    );
+                });
+            });
+        })(req, res, next);
     },
 );
 
 app.get("/api/sesion", verificarAutenticacion, async (req, res) => {
     const usuario = await obtenerUsuarioPorId(req.session.usuario.id);
     if (!usuario) {
-        return res.status(401).json({ mensaje: "La cuenta de esta sesión ya no existe." });
+        return res
+            .status(401)
+            .json({ mensaje: "La cuenta de esta sesión ya no existe." });
     }
-    return res.json({ mensaje: "Usuario autenticado", usuario: crearDatosSesion(usuario) });
+    return res.json({
+        mensaje: "Usuario autenticado",
+        usuario: crearDatosSesion(usuario),
+    });
 });
 
 app.get("/api/app-info", (req, res) => {
@@ -216,7 +282,9 @@ app.post(
     uploadPhoto,
     async (req, res) => {
         if (!req.file) {
-            return res.status(400).json({ mensaje: "Selecciona una fotografía." });
+            return res
+                .status(400)
+                .json({ mensaje: "Selecciona una fotografía." });
         }
 
         const titulo = req.body.titulo;
@@ -261,7 +329,9 @@ app.delete("/api/photos/:photoId", verificarAutenticacion, async (req, res) => {
             await eliminarImagenSubida(foto.imagen);
         } catch (error) {
             if (error.code !== "ENOENT") {
-                console.error("No se pudo limpiar el archivo de una fotografía eliminada.");
+                console.error(
+                    "No se pudo limpiar el archivo de una fotografía eliminada.",
+                );
             }
         }
     }
@@ -317,17 +387,31 @@ app.use((error, req, res, next) => {
     }
 
     if (error?.code === "LIMIT_FILE_SIZE" || error?.status === 413) {
-        return res.status(413).json({ mensaje: "La imagen supera el tamaño máximo permitido." });
+        return res
+            .status(413)
+            .json({ mensaje: "La imagen supera el tamaño máximo permitido." });
     }
-    if (error instanceof ImageValidationError || error?.type === "entity.parse.failed") {
+    if (
+        error instanceof ImageValidationError ||
+        error?.type === "entity.parse.failed"
+    ) {
         return res.status(400).json({ mensaje: error.message });
     }
-    if (error?.code === "LIMIT_UNEXPECTED_FILE" || error?.code === "LIMIT_FILE_COUNT") {
-        return res.status(400).json({ mensaje: "El formulario incluye un archivo no permitido." });
+    if (
+        error?.code === "LIMIT_UNEXPECTED_FILE" ||
+        error?.code === "LIMIT_FILE_COUNT"
+    ) {
+        return res
+            .status(400)
+            .json({
+                mensaje: "El formulario incluye un archivo no permitido.",
+            });
     }
 
-    console.error("Error al procesar una solicitud de GalleryMage.");
-    return res.status(500).json({ mensaje: "No se pudo completar la solicitud." });
+    console.error("Error al procesar una solicitud de GalleryMage:", error);
+    return res
+        .status(500)
+        .json({ mensaje: "No se pudo completar la solicitud." });
 });
 
 await conectarDB();
